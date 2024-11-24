@@ -1,5 +1,5 @@
 const express = require('express');
-const connection = require('../db/connection');
+const connection = require('../db/conexion');
 const router = express.Router();
 
 // Registrar mascota

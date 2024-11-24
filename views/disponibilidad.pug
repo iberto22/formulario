@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 Verificar Disponibilidad
+  if disponible
+    p= mensaje
+    a(href="/usuarios/login") Continuar
+  else
+    p= mensaje
+    a(href="/") Regresar al inicio
+

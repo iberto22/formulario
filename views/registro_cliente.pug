@@ -1,0 +1,61 @@
+extends layout
+
+block content
+  h1 Registro de Cliente
+  form(action="/usuarios/registro" method="POST")
+    label(for="nombre_cliente") Nombre:
+    input(type="text" name="nombre_cliente" required)
+    br
+    label(for="apellido_cliente") Apellido:
+    input(type="text" name="apellido_cliente" required)
+    br
+    label(for="email_cliente") Email:
+    input(type="email" name="email_cliente" required)
+    br
+    label(for="telefono") Teléfono:
+    input(type="text" name="telefono" required)
+    br
+    label(for="nombre_calle") Calle:
+    input(type="text" name="nombre_calle" required)
+    br
+    label(for="numero_calle") Número:
+    input(type="number" name="numero_calle" required)
+    br
+    label(for="CP") Código Postal:
+    input(type="number" name="CP" required)
+    br
+    label(for="poblacion_residencia") Ciudad:
+    input(type="text" name="poblacion_residencia" required)
+    br
+    h2 Información de Mascota
+    label(for="nombre_mascota") Nombre:
+    input(type="text" name="mascotas[nombre_mascota]" required)
+    br
+    label(for="tipo_mascota") Tipo:
+    select(name="mascotas[tipo_mascota]")
+      option(value="perro") Perro
+      option(value="gato") Gato
+    br
+    label(for="raza") Raza:
+    input(type="text" name="mascotas[raza]" required)
+    br
+    label(for="edad") Edad:
+    input(type="number" name="mascotas[edad]" required)
+    br
+    label(for="sexo") Sexo:
+    select(name="mascotas[sexo]")
+      option(value="macho") Macho
+      option(value="hembra") Hembra
+    br
+    label(for="vacunacion") Vacunación:
+    input(type="text" name="mascotas[vacunacion]" required)
+    br
+    label(for="chip") Chip:
+    select(name="mascotas[chip]")
+      option(value="si") Sí
+      option(value="no") No
+    br
+    label(for="tipo_alimento") Tipo de Alimento:
+    input(type="text" name="mascotas[tipo_alimento]" required)
+    br
+    button(type="submit") Registrar Cliente

@@ -1,13 +1,9 @@
-doctype html
-html
-  head
-    title Hotel Canino
-    link(rel="stylesheet", href=" ./public/css/styles.css")
-  body
-    h1 Bienvenido al Hotel Canino
-    nav
-      ul
-        li: a(href="/verificar-disponibilidad") Verificar Disponibilidad
-        li: a(href="/registrar-usuario") Registrar Usuario
-        li: a(href="/registrar-mascota") Registrar Mascota
-        li: a(href="/crear-reserva") Crear Reserva
+extends layout
+
+block content
+  h1= mensaje
+  a(href="/reservas") Verificar Disponibilidad
+  br
+  a(href="/usuarios/login") Iniciar Sesión
+  br
+  a(href="/usuarios/registro") Registrarse

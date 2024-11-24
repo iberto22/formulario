@@ -1,46 +1,53 @@
 const express = require('express');
-const connection = require('../db/connection');
 const router = express.Router();
+const conexion = require('../db/conexion');
 
-// Verificar disponibilidad de habitaciones
-router.post('/disponibilidad', (req, res) => {
-    const { tipo_mascota, fecha_inicio, fecha_fin } = req.body;
-
-    const query = `
-        SELECT * FROM reservas 
-        WHERE tipo_mascota = ? 
-        AND (fecha_inicio <= ? AND fecha_fin >= ?)
-    `;
-
-    connection.query(query, [tipo_mascota, fecha_fin, fecha_inicio], (err, results) => {
-        if (err) {
-            res.status(500).send('Error al verificar disponibilidad.');
-            return;
-        }
-        if (results.length > 0) {
-            res.send('No hay habitaciones disponibles.');
-        } else {
-            res.send('Habitaciones disponibles.');
-        }
-    });
+// Renderiza la página de reservas
+router.get('/', async (req, res) => {
+    try {
+        const [habitaciones] = await conexion.query(
+            'SELECT * FROM hospedaje WHERE fecha_entrada IS NULL OR fecha_salida < CURDATE()'
+        );
+        res.render('reservas', { habitaciones });
+    } catch (error) {
+        console.error('Error al cargar las reservas:', error);
+        res.status(500).send('Error al cargar las reservas');
+    }
 });
 
-// Crear reserva
-router.post('/crear', (req, res) => {
-    const { id_mascota, id_hospedaje, fecha_inicio, fecha_fin } = req.body;
+// Procesa una reserva
+router.post('/', async (req, res) => {
+    const { id_cliente, id_habitacion, fecha_inicio, fecha_fin } = req.body;
 
-    const query = `
-        INSERT INTO reservas (id_mascota, id_hospedaje, fecha_inicio, fecha_fin) 
-        VALUES (?, ?, ?, ?)
-    `;
+    try {
+        // Comprobar disponibilidad
+        const [habitacionesDisponibles] = await conexion.query(
+            'SELECT * FROM hospedaje WHERE id_hospedaje = ? AND (fecha_entrada IS NULL OR fecha_salida < ?)',
+            [id_habitacion, fecha_inicio]
+        );
 
-    connection.query(query, [id_mascota, id_hospedaje, fecha_inicio, fecha_fin], (err) => {
-        if (err) {
-            res.status(500).send('Error al crear la reserva.');
-            return;
+        if (habitacionesDisponibles.length === 0) {
+            return res.status(400).send('La habitación no está disponible para las fechas seleccionadas.');
         }
-        res.send('Reserva creada exitosamente.');
-    });
+
+        // Registrar la reserva
+        await conexion.query(
+            `INSERT INTO reservas (id_cliente, id_hospedaje, fecha_inicio, fecha_fin)
+             VALUES (?, ?, ?, ?)`,
+            [id_cliente, id_habitacion, fecha_inicio, fecha_fin]
+        );
+
+        // Actualizar la disponibilidad de la habitación
+        await conexion.query(
+            `UPDATE hospedaje SET fecha_entrada = ?, fecha_salida = ? WHERE id_hospedaje = ?`,
+            [fecha_inicio, fecha_fin, id_habitacion]
+        );
+
+        res.send('Reserva realizada con éxito.');
+    } catch (error) {
+        console.error('Error al procesar la reserva:', error);
+        res.status(500).send('Error al procesar la reserva');
+    }
 });
 
 module.exports = router;
