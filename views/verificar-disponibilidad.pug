@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Verificar Disponibilidad
+    link(rel="stylesheet", href="/css/styles.css")
+  body
+    h1 Verificar Disponibilidad
+    form(action="/reservas/disponibilidad" method="POST")
+      label(for="tipo_mascota") Tipo de Mascota:
+      select(name="tipo_mascota" required)
+        option(value="perro") Perro
+        option(value="gato") Gato
+      label(for="fecha_inicio") Fecha de Inicio:
+      input(type="date" name="fecha_inicio" required)
+      label(for="fecha_fin") Fecha de Fin:
+      input(type="date" name="fecha_fin" required)
+      button(type="submit") Verificar

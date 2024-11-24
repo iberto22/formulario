@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Registrar Mascota
+    link(rel="stylesheet", href="/css/styles.css")
+  body
+    h1 Registrar Mascota
+    form(action="/mascotas/registrar" method="POST")
+      label(for="id_cliente") ID del Cliente (Existente):
+      input(type="number" name="id_cliente" required)
+      label(for="nombre_mascota") Nombre de la Mascota:
+      input(type="text" name="nombre_mascota" required)
+      label(for="tipo_mascota") Tipo de Mascota:
+      select(name="tipo_mascota" required)
+        option(value="perro") Perro
+        option(value="gato") Gato
+      button(type="submit") Registrar

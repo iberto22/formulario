@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Crear Reserva
+    link(rel="stylesheet", href="/css/styles.css")
+  body
+    h1 Crear Reserva
+    form(action="/reservas/crear" method="POST")
+      label(for="id_mascota") ID de la Mascota (Existente):
+      input(type="number" name="id_mascota" required)
+      label(for="id_hospedaje") ID de la Habitación (1 para Perro, 2 para Gato):
+      input(type="number" name="id_hospedaje" required)
+      label(for="fecha_inicio") Fecha de Inicio:
+      input(type="date" name="fecha_inicio" required)
+      label(for="fecha_fin") Fecha de Fin:
+      input(type="date" name="fecha_fin" required)
+      button(type="submit") Reservar
